@@ -1,0 +1,21 @@
+---
+- name: install usbmount
+  become: yes
+  apt:
+    name: 'usbmount'
+    state: latest
+    update_cache: yes
+
+- name: change usbmount setting
+  become: yes
+  replace: >-
+    dest='/etc/usbmount/usbmount.conf'
+    regexp='MOUNTOPTIONS=".*"'
+    replace='MOUNTOPTIONS="ro,noexec,nodev"'
+
+- name: change udevd setting
+  become: yes
+  replace: >-
+    dest='/lib/systemd/system/systemd-udevd.service'
+    regexp='PrivateMounts=.*'
+    replace='PrivateMounts=no'

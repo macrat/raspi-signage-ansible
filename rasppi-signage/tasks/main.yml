@@ -1,0 +1,45 @@
+---
+- name: create signage user
+  become: yes
+  user:
+    name: signage
+    groups: audio,video
+
+- name: download source
+  get_url: url="https://github.com/macrat/rasppi-signage/archive/master.zip" dest=/tmp/rasppi-signage-master.zip
+
+- name: unzip source
+  become: yes
+  become_user: signage
+  unarchive:
+    src: /tmp/rasppi-signage-master.zip
+    dest: /home/signage/rasppi-signage/
+    extra_opts: "-j"
+    remote_src: yes
+
+- name: change settings
+  become: yes
+  become_user: signage
+  replace: >-
+    dest='/home/signage/rasppi-signage/config.py'
+    regexp='VIDEOS_DIR = ".*"'
+    replace='VIDEOS_DIR = "/media/"'
+
+- name: install dependencies
+  become: yes
+  become_user: signage
+  command: pip3 install -r /home/signage/rasppi-signage/requirements.txt
+
+- name: make rasppi-signage.service
+  become: yes
+  copy:
+    dest: /etc/systemd/system/rasppi-signage.service
+    src: ../files/rasppi-signage.service
+
+- name: enable rasppi-signage.service
+  become: yes
+  systemd:
+    name: rasppi-signage.service
+    state: started
+    daemon_reload: yes
+    enabled: yes

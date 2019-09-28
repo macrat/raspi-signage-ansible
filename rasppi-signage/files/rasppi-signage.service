@@ -1,0 +1,13 @@
+[Unit]
+Description=RaspPi Signage
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u main.py
+Restart=always
+WorkingDirectory=/home/signage/rasppi-signage
+User=signage
+Group=signage
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+---
+- name: update all packages
+  become: yes
+  apt:
+    upgrade: dist
+
+- name: upgrade all packages
+  become: yes
+  apt:
+    name: '*'
+    state: latest
