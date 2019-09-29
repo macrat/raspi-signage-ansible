@@ -4,4 +4,5 @@
     - apt-update
     - usbmount
     - fim
+    - boot-settings
     - raspi-signage

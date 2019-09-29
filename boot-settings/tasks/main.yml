@@ -1,0 +1,16 @@
+---
+- name: Disable serial TTY
+  become: yes
+  systemd:
+    name: serial-getty@AMA0.service
+    state: stopped
+    daemon_reload: yes
+    enabled: no
+
+- name: Edit boot settings
+  become: yes
+  lineinfile:
+    path: /boot/cmdline.txt
+    backrefs: yes
+    regexp: '^(.*) console=.*,115200 console=tty1 (.*)$'
+    line: '\1 \2 quiet splash'
