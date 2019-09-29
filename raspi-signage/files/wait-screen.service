@@ -1,0 +1,13 @@
+[Unit]
+Description=Waiting screen of RasPi Signage
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u main.py
+Restart=always
+WorkingDirectory=/home/signage/wait-screen
+User=signage
+Group=signage
+
+[Install]
+WantedBy=multi-user.target

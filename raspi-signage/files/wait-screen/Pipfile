@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "*"
+mypy = "*"
+
+[packages]
+pillow = "*"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+start = "python main.py"
+format = "black ."
+test = "mypy ."
+make-requirements = "sh -c 'pipenv lock -r > requirements.txt'"
+
+[pipenv]
+allow_prereleases = true

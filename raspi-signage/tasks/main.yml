@@ -5,7 +5,7 @@
     name: signage
     groups: audio,video
 
-- name: upload sources
+- name: upload raspi-signage sources
   become: yes
   become_user: signage
   copy:
@@ -28,29 +28,64 @@
     - raspi-signage/assets/logo.png
     - raspi-signage/assets/icon.ico
 
-- name: change settings
+- name: upload wait-screen sources
+  become: yes
+  become_user: signage
+  copy:
+    src: '{{ item }}'
+    dest: /home/signage/wait-screen/
+  with_fileglob:
+    - wait-screen/*.py
+    - wait-screen/*.txt
+
+- name: change movie/image directory
   become: yes
   become_user: signage
   replace:
     dest: /home/signage/raspi-signage/config.py
-    regexp: 'BASE_DIR = ".*"'
+    regexp: '^BASE_DIR = ".*"$'
     replace: 'BASE_DIR = "/media/"'
+
+- name: change default file to wait screen
+  become: yes
+  become_user: signage
+  replace:
+    dest: /home/signage/raspi-signage/config.py
+    regexp: '^DEFAULT_FILE = ".*"$'
+    replace: 'DEFAULT_FILE = "/var/tmp/wait-screen.png"'
 
 - name: install dependencies
   become: yes
   become_user: signage
-  command: pip3 install -r /home/signage/raspi-signage/requirements.txt
+  command: 'pip3 install -r {{ item }}'
+  vars:
+    targets:
+      - /home/signage/raspi-signage/requirements.txt
+      - /home/signage/wait-screen/requirements.txt
+  with_items: '{{ targets }}'
 
-- name: make raspi-signage.service
+- name: install wait-screen dependencies
+  become: yes
+  become_user: signage
+  command: pip3 install -r /home/signage/wait-screen/requirements.txt
+
+- name: make services
   become: yes
   copy:
-    dest: /etc/systemd/system/raspi-signage.service
-    src: ../files/raspi-signage.service
+    src: '{{ item }}'
+    dest: /etc/systemd/system/
+  with_fileglob:
+    - '*.service'
 
-- name: enable raspi-signage.service
+- name: enable services
   become: yes
   systemd:
-    name: raspi-signage.service
+    name: '{{ item }}'
     state: restarted
     daemon_reload: yes
     enabled: yes
+  vars:
+    services:
+      - raspi-signage.service
+      - wait-screen.service
+  with_items: '{{ services }}'
