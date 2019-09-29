@@ -1,0 +1,11 @@
+[Unit]
+Description=Splash screen
+After=local-fs.target
+
+[Service]
+ExecStart=/usr/bin/fim -T 1 --quiet --autozoom /home/signage/raspi-signage/logo.png
+StandardInput=tty
+StandardOutput=tty
+
+[Install]
+WantedBy=sysinit.target

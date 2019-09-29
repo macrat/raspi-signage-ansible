@@ -15,6 +15,7 @@
     - raspi-signage/*.py
     - raspi-signage/*.html
     - raspi-signage/*.txt
+    - raspi-signage/logo.png
     - raspi-signage/LICENSE
     - raspi-signage/README.md
 

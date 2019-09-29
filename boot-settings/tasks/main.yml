@@ -1,16 +1,35 @@
 ---
-- name: Disable serial TTY
+- name: disable TTY
   become: yes
   systemd:
-    name: serial-getty@AMA0.service
+    name: '{{ item }}'
     state: stopped
     daemon_reload: yes
     enabled: no
+  vars:
+    targets: 
+      - 'getty@tty1.service'
+      - 'serial-getty@AMA0.service'
+  with_items: '{{ targets }}'
 
-- name: Edit boot settings
+- name: edit boot settings
   become: yes
   lineinfile:
     path: /boot/cmdline.txt
     backrefs: yes
     regexp: '^(.*) console=.*,115200 console=tty1 (.*)$'
-    line: '\1 \2 quiet splash'
+    line: '\1 \2 consoleblank=0'
+
+- name: copy splash image settings
+  become: yes
+  copy:
+    dest: /etc/systemd/system/splashscreen.service
+    src: ../files/splashscreen.service
+
+- name: enable splash image
+  become: yes
+  systemd:
+    name: splashscreen
+    state: started
+    daemon_reload: yes
+    enabled: yes
