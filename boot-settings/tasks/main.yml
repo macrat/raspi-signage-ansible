@@ -20,13 +20,13 @@
     regexp: '^(.*) console=.*,115200 console=tty1 (.*)$'
     line: '\1 \2 consoleblank=0'
 
-- name: copy splash image settings
+- name: copy splash service
   become: yes
   copy:
     dest: /etc/systemd/system/splashscreen.service
     src: ../files/splashscreen.service
 
-- name: enable splash image
+- name: enable splash service
   become: yes
   systemd:
     name: splashscreen
