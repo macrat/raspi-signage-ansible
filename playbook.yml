@@ -3,4 +3,4 @@
   roles:
     - apt-update
     - usbmount
-    - rasppi-signage
+    - raspi-signage

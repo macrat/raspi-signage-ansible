@@ -1,11 +1,11 @@
 [Unit]
-Description=RaspPi Signage
+Description=RasPi Signage
 After=network.target
 
 [Service]
 ExecStart=/usr/bin/python3 -u main.py
 Restart=always
-WorkingDirectory=/home/signage/rasppi-signage
+WorkingDirectory=/home/signage/raspi-signage
 User=signage
 Group=signage
 

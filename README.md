@@ -1,7 +1,7 @@
-RaspPi Signage Ansible Playbook
-===============================
+RasPi Signage Ansible Playbook
+==============================
 
-Ansible playbook for [RaspPi Signage](https://github.com/macrat/rasppi-signage).
+Ansible playbook for [RasPi Signage](https://github.com/macrat/raspi-signage).
 
 
 ## Usage
@@ -9,7 +9,7 @@ Ansible playbook for [RaspPi Signage](https://github.com/macrat/rasppi-signage).
 ### 1. Download
 
 ``` shell
-$ git clone https://github.com/macrat/rasppi-signage-ansible.git && cd rasppi-signage-ansible
+$ git clone https://github.com/macrat/raspi-signage-ansible.git && cd raspi-signage-ansible
 ```
 
 ### 2. Edit inventory

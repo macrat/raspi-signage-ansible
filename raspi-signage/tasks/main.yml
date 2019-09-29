@@ -6,14 +6,14 @@
     groups: audio,video
 
 - name: download source
-  get_url: url="https://github.com/macrat/rasppi-signage/archive/master.zip" dest=/tmp/rasppi-signage-master.zip
+  get_url: url="https://github.com/macrat/raspi-signage/archive/master.zip" dest=/tmp/raspi-signage-master.zip
 
 - name: unzip source
   become: yes
   become_user: signage
   unarchive:
-    src: /tmp/rasppi-signage-master.zip
-    dest: /home/signage/rasppi-signage/
+    src: /tmp/raspi-signage-master.zip
+    dest: /home/signage/raspi-signage/
     extra_opts: "-j"
     remote_src: yes
 
@@ -21,25 +21,25 @@
   become: yes
   become_user: signage
   replace: >-
-    dest='/home/signage/rasppi-signage/config.py'
+    dest='/home/signage/raspi-signage/config.py'
     regexp='VIDEOS_DIR = ".*"'
     replace='VIDEOS_DIR = "/media/"'
 
 - name: install dependencies
   become: yes
   become_user: signage
-  command: pip3 install -r /home/signage/rasppi-signage/requirements.txt
+  command: pip3 install -r /home/signage/raspi-signage/requirements.txt
 
-- name: make rasppi-signage.service
+- name: make raspi-signage.service
   become: yes
   copy:
-    dest: /etc/systemd/system/rasppi-signage.service
-    src: ../files/rasppi-signage.service
+    dest: /etc/systemd/system/raspi-signage.service
+    src: ../files/raspi-signage.service
 
-- name: enable rasppi-signage.service
+- name: enable raspi-signage.service
   become: yes
   systemd:
-    name: rasppi-signage.service
+    name: raspi-signage.service
     state: started
     daemon_reload: yes
     enabled: yes
