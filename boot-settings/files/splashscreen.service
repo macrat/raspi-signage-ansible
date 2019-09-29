@@ -3,7 +3,7 @@ Description=Splash screen
 After=local-fs.target
 
 [Service]
-ExecStart=/usr/bin/fim -T 1 --quiet --autozoom /home/signage/raspi-signage/logo.png
+ExecStart=/usr/bin/fim -T 1 --quiet --autozoom /home/signage/raspi-signage/assets/logo.png
 StandardInput=tty
 StandardOutput=tty
 
