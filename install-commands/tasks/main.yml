@@ -1,0 +1,12 @@
+---
+- name: install dependency commands
+  become: yes
+  apt:
+    name: '{{ item }}'
+    state: latest
+    update_cache: yes
+  vars:
+    targets:
+      - fim
+      - omxplayer
+  with_items: '{{ targets }}'

@@ -3,6 +3,6 @@
   roles:
     - apt-update
     - usbmount
-    - fim
+    - install-commands
     - boot-settings
     - raspi-signage

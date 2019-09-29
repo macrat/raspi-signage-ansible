@@ -1,7 +1,0 @@
----
-- name: install fim
-  become: yes
-  apt:
-    name: 'fim'
-    state: latest
-    update_cache: yes
