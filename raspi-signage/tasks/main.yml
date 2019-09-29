@@ -15,17 +15,26 @@
     - raspi-signage/*.py
     - raspi-signage/*.html
     - raspi-signage/*.txt
-    - raspi-signage/logo.png
     - raspi-signage/LICENSE
     - raspi-signage/README.md
+
+- name: upload assets
+  become: yes
+  become_user: signage
+  copy:
+    src: '{{ item }}'
+    dest: /home/signage/raspi-signage/assets/
+  with_fileglob:
+    - raspi-signage/assets/logo.png
+    - raspi-signage/assets/icon.ico
 
 - name: change settings
   become: yes
   become_user: signage
-  replace: >-
-    dest='/home/signage/raspi-signage/config.py'
-    regexp='BASE_DIR = ".*"'
-    replace='BASE_DIR = "/media/"'
+  replace:
+    dest: /home/signage/raspi-signage/config.py
+    regexp: 'BASE_DIR = ".*"'
+    replace: 'BASE_DIR = "/media/"'
 
 - name: install dependencies
   become: yes
@@ -42,6 +51,6 @@
   become: yes
   systemd:
     name: raspi-signage.service
-    state: started
+    state: restarted
     daemon_reload: yes
     enabled: yes
