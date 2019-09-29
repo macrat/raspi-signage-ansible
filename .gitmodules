@@ -1,0 +1,3 @@
+[submodule "raspi-signage/files/raspi-signage"]
+	path = raspi-signage/files/raspi-signage
+	url = https://github.com/macrat/raspi-signage.git

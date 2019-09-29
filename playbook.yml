@@ -3,4 +3,5 @@
   roles:
     - apt-update
     - usbmount
+    - fim
     - raspi-signage

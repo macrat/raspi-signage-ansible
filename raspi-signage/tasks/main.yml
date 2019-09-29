@@ -5,25 +5,26 @@
     name: signage
     groups: audio,video
 
-- name: download source
-  get_url: url="https://github.com/macrat/raspi-signage/archive/master.zip" dest=/tmp/raspi-signage-master.zip
-
-- name: unzip source
+- name: upload sources
   become: yes
   become_user: signage
-  unarchive:
-    src: /tmp/raspi-signage-master.zip
+  copy:
+    src: '{{ item }}'
     dest: /home/signage/raspi-signage/
-    extra_opts: "-j"
-    remote_src: yes
+  with_fileglob:
+    - raspi-signage/*.py
+    - raspi-signage/*.html
+    - raspi-signage/*.txt
+    - raspi-signage/LICENSE
+    - raspi-signage/README.md
 
 - name: change settings
   become: yes
   become_user: signage
   replace: >-
     dest='/home/signage/raspi-signage/config.py'
-    regexp='VIDEOS_DIR = ".*"'
-    replace='VIDEOS_DIR = "/media/"'
+    regexp='BASE_DIR = ".*"'
+    replace='BASE_DIR = "/media/"'
 
 - name: install dependencies
   become: yes
