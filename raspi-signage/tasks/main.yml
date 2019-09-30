@@ -54,7 +54,15 @@
     regexp: '^DEFAULT_FILE = ".*"$'
     replace: 'DEFAULT_FILE = "/var/tmp/wait-screen.png"'
 
-- name: install dependencies
+- name: install dependencies (apt)
+  become: yes
+  apt:
+    name:
+      - libjpeg-dev
+    state: latest
+    update_cache: yes
+
+- name: install dependencies (pip)
   become: yes
   become_user: signage
   command: 'pip3 install -r {{ item }}'
