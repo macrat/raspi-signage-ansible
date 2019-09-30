@@ -2,10 +2,6 @@
 - name: update all packages
   become: yes
   apt:
-    upgrade: dist
-
-- name: upgrade all packages
-  become: yes
-  apt:
-    name: '*'
+    upgrade: full
     state: latest
+    update_cache: yes
