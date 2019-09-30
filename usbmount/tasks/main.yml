@@ -8,14 +8,14 @@
 
 - name: change usbmount setting
   become: yes
-  replace: >-
-    dest='/etc/usbmount/usbmount.conf'
-    regexp='MOUNTOPTIONS=".*"'
-    replace='MOUNTOPTIONS="ro,noexec,nodev"'
+  replace:
+    dest: '/etc/usbmount/usbmount.conf'
+    regexp: 'MOUNTOPTIONS=".*"'
+    replace: 'MOUNTOPTIONS="ro,noexec,nodev,iocharset=utf8"'
 
 - name: change udevd setting
   become: yes
-  replace: >-
-    dest='/lib/systemd/system/systemd-udevd.service'
-    regexp='PrivateMounts=.*'
-    replace='PrivateMounts=no'
+  replace:
+    dest: '/lib/systemd/system/systemd-udevd.service'
+    regexp: 'PrivateMounts=yes'
+    replace: 'PrivateMounts=no'
