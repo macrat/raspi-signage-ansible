@@ -72,11 +72,6 @@
       - /home/signage/wait-screen/requirements.txt
   with_items: '{{ targets }}'
 
-- name: install wait-screen dependencies
-  become: yes
-  become_user: signage
-  command: pip3 install -r /home/signage/wait-screen/requirements.txt
-
 - name: make services
   become: yes
   copy:
