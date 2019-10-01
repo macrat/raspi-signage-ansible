@@ -1,2 +1,4 @@
 -i https://pypi.org/simple
 pillow==6.1.0
+qrcode==6.1
+six==1.12.0

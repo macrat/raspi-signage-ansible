@@ -14,7 +14,7 @@
     dest: /etc/dhcpcd.conf
     content: |
       interface wlan0
-      static ip_address=192.168.100.1/24
+      static ip_address={{ NETWORK_HOST }}/{{ NETWORK_CIDR }}
 
 - name: setting DHCP server as authorative
   become: yes
@@ -28,13 +28,13 @@
   blockinfile:
     dest: /etc/dhcp/dhcpd.conf
     content: |
-      subnet 192.168.100.0 netmask 255.255.255.0 {
-        range 192.168.100.2 192.168.100.16;
-        option routers 192.168.100.1;
+      subnet {{ NETWORK_ADDR }} netmask {{ NETWORK_MASK }} {
+        range {{ NETWORK_RANGE_FROM }} {{ NETWORK_RANGE_TO }};
+        option routers {{ NETWORK_HOST }};
         default-lease-time 600;
         max-lease-time 7200;
         option domain-name "raspi-signage.local";
-        option domain-name-servers 192.168.100.1;
+        option domain-name-servers {{ NETWORK_HOST }};
       }
 
 - name: setting DHCP server interface

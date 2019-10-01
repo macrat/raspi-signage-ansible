@@ -28,15 +28,16 @@
     - raspi-signage/assets/logo.png
     - raspi-signage/assets/icon.ico
 
-- name: upload wait-screen sources
+- name: upload initial-screen sources
   become: yes
   become_user: signage
   copy:
     src: '{{ item }}'
-    dest: /home/signage/wait-screen/
+    dest: /home/signage/initial-screen/
   with_fileglob:
-    - wait-screen/*.py
-    - wait-screen/*.txt
+    - initial-screen/*.py
+    - initial-screen/initial-screen-base.png
+    - initial-screen/*.txt
 
 - name: change movie/image directory
   become: yes
@@ -51,8 +52,16 @@
   become_user: signage
   replace:
     dest: /home/signage/raspi-signage/config.py
-    regexp: '^DEFAULT_FILE = ".*"$'
-    replace: 'DEFAULT_FILE = "/var/tmp/wait-screen.png"'
+    regexp: '^INITIAL_FILE = ".*"$'
+    replace: 'INITIAL_FILE = "/var/tmp/initial-screen.png"'
+
+- name: set console url
+  become: yes
+  become_user: signage
+  replace:
+    dest: /home/signage/initial-screen/main.py
+    regexp: '^CONSOLE_URL = ".*"$'
+    replace: 'CONSOLE_URL = "http://{{ NETWORK_HOST }}:8080"'
 
 - name: install dependencies (apt)
   become: yes
@@ -69,7 +78,7 @@
   vars:
     targets:
       - /home/signage/raspi-signage/requirements.txt
-      - /home/signage/wait-screen/requirements.txt
+      - /home/signage/initial-screen/requirements.txt
   with_items: '{{ targets }}'
 
 - name: make services
@@ -89,6 +98,6 @@
     enabled: yes
   vars:
     services:
+      - initial-screen.service
       - raspi-signage.service
-      - wait-screen.service
   with_items: '{{ services }}'

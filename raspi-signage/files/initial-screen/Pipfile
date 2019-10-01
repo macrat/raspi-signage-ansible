@@ -9,6 +9,7 @@ mypy = "*"
 
 [packages]
 pillow = "*"
+qrcode = "*"
 
 [requires]
 python_version = "3.7"

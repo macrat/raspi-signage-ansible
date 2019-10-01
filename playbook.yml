@@ -8,6 +8,12 @@
     - wifi-access-point
     - raspi-signage
   vars:
+    NETWORK_ADDR: '192.168.100.0'
+    NETWORK_CIDR: '24'
+    NETWORK_MASK: '255.255.255.0'
+    NETWORK_HOST: '192.168.100.1'
+    NETWORK_RANGE_FROM: '192.168.100.2'
+    NETWORK_RANGE_TO: '192.168.100.16'
     WIFI_SSID: 'raspi-signage-{{ ("for random salt" | password_hash("md5") | hash("md5"))[:4] }}'
     WIFI_PASS: '{{ ("for random salt" | password_hash("md5") | hash("md5"))[:16] }}'
     WIFI_CHANNEL: '{{ 13 | random(start=1) }}'
