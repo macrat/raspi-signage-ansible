@@ -8,5 +8,6 @@
     - wifi-access-point
     - raspi-signage
   vars:
-    WIFI_SSID: 'raspi-signage-{{ "for random salt" | password_hash("md5") }}'
-    WIFI_PASS: '{{ "for random salt" | password_hash("md5") }}'
+    WIFI_SSID: 'raspi-signage-{{ ("for random salt" | password_hash("md5") | hash("md5"))[:4] }}'
+    WIFI_PASS: '{{ ("for random salt" | password_hash("md5") | hash("md5"))[:16] }}'
+    WIFI_CHANNEL: '{{ 13 | random(start=1) }}'
