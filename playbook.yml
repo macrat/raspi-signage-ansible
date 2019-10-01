@@ -5,4 +5,8 @@
     - usbmount
     - install-commands
     - boot-settings
+    - wifi-access-point
     - raspi-signage
+  vars:
+    WIFI_SSID: 'raspi-signage-{{ "for random salt" | password_hash("md5") }}'
+    WIFI_PASS: '{{ "for random salt" | password_hash("md5") }}'

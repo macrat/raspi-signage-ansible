@@ -1,0 +1,78 @@
+---
+- name: install requires
+  become: yes
+  apt:
+    name:
+      - hostapd
+      - isc-dhcp-server
+    state: latest
+    update_cache: yes
+
+- name: setting static IP address
+  become: yes
+  blockinfile:
+    dest: /etc/dhcpcd.conf
+    content: |
+      interface wlan0
+      static ip_address=192.168.100.1/24
+
+- name: setting DHCP server as authorative
+  become: yes
+  replace:
+    dest: /etc/dhcp/dhcpd.conf
+    regexp: '^#authoritative;$'
+    replace: 'authoritative;'
+
+- name: setting DHCP server network
+  become: yes
+  blockinfile:
+    dest: /etc/dhcp/dhcpd.conf
+    content: |
+      subnet 192.168.100.0 netmask 255.255.255.0 {
+        range 192.168.100.2 192.168.100.16;
+        option routers 192.168.100.1;
+        default-lease-time 600;
+        max-lease-time 7200;
+        option domain-name "raspi-signage.local";
+        option domain-name-servers 192.168.100.1;
+      }
+
+- name: setting DHCP server interface
+  become: yes
+  replace:
+    dest: /etc/default/isc-dhcp-server
+    regexp: '^INTERFACESv4=".*"$'
+    replace: 'INTERFACESv4="wlan0"'
+
+- name: setting access point info
+  become: yes
+  template:
+    src: hostapd.conf
+    dest: /etc/hostapd/hostapd.conf
+
+- name: setting hostapd
+  become: yes
+  replace:
+    dest: /etc/default/hostapd
+    regexp: '^#?DAEMON_CONF=".*"$'
+    replace: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+
+- name: setting delay to start isc-dhcp-server
+  become: yes
+  lineinfile:
+    dest: /etc/init.d/isc-dhcp-server
+    regexp: '^\tsleep [0-9]+  # wait hostapd$'
+    insertbefore: '^\tstart-stop-daemon --start'
+    line: '	sleep 5  # wait hostapd'
+
+- name: enable services
+  become: yes
+  systemd:
+    name: '{{ item }}'
+    state: started
+    masked: no
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - hostapd.service
+    - isc-dhcp-server.service
