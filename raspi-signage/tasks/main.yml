@@ -22,11 +22,8 @@
   become: yes
   become_user: signage
   copy:
-    src: '{{ item }}'
-    dest: /home/signage/raspi-signage/assets/
-  with_fileglob:
-    - raspi-signage/assets/logo.png
-    - raspi-signage/assets/icon.ico
+    src: raspi-signage/assets
+    dest: /home/signage/raspi-signage/
 
 - name: upload initial-screen sources
   become: yes
