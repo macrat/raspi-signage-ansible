@@ -1,0 +1,12 @@
+---
+- name: disable unuse services
+  become: yes
+  systemd:
+    name: '{{ item }}'
+    state: stopped
+    daemon_reload: yes
+    enabled: no
+  with_items:
+    - wpa_supplicant
+    - hciuart
+    - bluetooth
